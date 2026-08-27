@@ -10,6 +10,8 @@ python3 -m http.server 8000
 
 Open `http://localhost:8000/`.
 
+Or access the current version of this project online here: https://norbyyt1300.github.io/justiceofsigmar/
+
 ## Source of battleplan geometry
 
 The battleplan geometry in `data/battleplans.json` was rebuilt from the supplied General's Handbook 2026–27 PDF, especially the Battleplan Maps section and the individual battleplan map pages. The app does **not** use the PDF artwork as a background image.
