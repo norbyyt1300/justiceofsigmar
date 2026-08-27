@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aqshy War Room — AoS 4e Battle Planner</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <div class="eyebrow">WARHAMMER AGE OF SIGMAR • 2026–27</div>
+    <h1>Aqshy War Room</h1>
+  </div>
+  <div class="top-actions">
+    <button id="saveBtn">Save plan</button>
+    <button id="loadBtn">Load plan</button>
+    <input id="loadFile" type="file" accept=".json" hidden>
+    <button id="exportBtn">Export PNG</button>
+    <button id="exportDataBtn">Export battleplan data</button>
+    <button id="loadDataBtn">Load battleplan data</button>
+    <input id="loadDataFile" type="file" accept=".json" hidden>
+  </div>
+</header>
+
+<main class="layout">
+  <aside class="sidebar">
+    <section>
+      <label for="planSelect">Battle plan</label>
+      <select id="planSelect"></select>
+    </section>
+
+    <section class="plan-card">
+      <div class="plan-title-row">
+        <h2 id="planName">—</h2>
+        <span id="planId" class="pill">—</span>
+      </div>
+      <div id="scoring"></div>
+      <details open>
+        <summary>Twist</summary>
+        <p id="twist"></p>
+      </details>
+      <details>
+        <summary>Special rules</summary>
+        <div id="rules"></div>
+      </details>
+    </section>
+
+    <section>
+      <h3>Army setup</h3>
+      <div class="army-tabs">
+        <button class="army-tab active blue" data-army="blue">Blue army</button>
+        <button class="army-tab red" data-army="red">Red army</button>
+      </div>
+      <div class="row">
+        <input id="armyName" placeholder="Army name" maxlength="40">
+        <button id="addArmyUnit">Add</button>
+      </div>
+      <input id="unitSearch" class="search" placeholder="Search unit or army…">
+      <div id="unitResults" class="unit-results"></div>
+      <div id="armyKey" class="army-key"></div>
+    </section>
+
+    <section class="map-key-card">
+      <h3>Battlefield key</h3>
+      <div id="mapKey"></div>
+    </section>
+
+    <section>
+      <h3>Battle tactics</h3>
+      <select id="tacticSelect"></select>
+      <div id="tacticCard" class="tactic-card"></div>
+    </section>
+
+    <section>
+      <h3>Map layers</h3>
+      <div class="layer-list">
+        <label class="checkbox"><input id="gridToggle" type="checkbox" checked> 1" grid</label>
+        <label class="checkbox"><input id="sectionsToggle" type="checkbox" checked> 15" × 11" sections</label>
+        <label class="checkbox"><input id="rulersToggle" type="checkbox" checked> Coordinate rulers</label>
+        <label class="checkbox"><input id="objectivesToggle" type="checkbox" checked> Objective control zones</label>
+        <label class="checkbox"><input id="terrainToggle" type="checkbox" checked> Terrain & places of power</label>
+      </div>
+    </section>
+
+    <section>
+      <h3>Tools</h3>
+      <div class="tool-grid">
+        <button id="undoBtn">Undo</button>
+        <button id="redoBtn">Redo</button>
+        <button id="deleteBtn">Delete selected</button>
+        <button id="clearBtn">Clear units</button>
+        <button id="labelsBtn">Toggle labels</button>
+      </div>
+      <div class="measurement-tool">
+        <label for="measurementDiameter">Measurement circle diameter (inches)</label>
+        <div class="row"><input id="measurementDiameter" type="number" min="0.5" max="60" step="0.5" value="9"><button id="addMeasurement">Add circle</button></div>
+        <small>Measurement circles are free-positioned, nearly transparent, and can be selected, dragged, or deleted.</small>
+      </div>
+    </section>
+
+    <section class="import-card">
+      <h3>Import a list</h3>
+      <p>Paste a simple list, one unit per line. Examples: <code>5 Liberators</code>, <code>Liberators x5</code>.</p>
+      <textarea id="listText" rows="6" placeholder="Liberators x5&#10;Prosecutors x3"></textarea>
+      <button id="importList">Import to current army</button>
+      <small>Best-effort matching against the bundled base-size index.</small>
+    </section>
+
+    <footer>
+      <p><strong>Scale:</strong> The board is rendered from a 60" × 44" coordinate system. Every grid square is exactly 1" × 1" in the drawing coordinate system; bases and map features use the same scale.</p>
+      <p><strong>Map geometry:</strong> Deployment zones and battlefield objects are encoded as vector geometry, so the battle-plan artwork is not used as a background layer.</p>
+      <p><strong>Battleplan/rules source:</strong> Wahapedia — General’s Handbook 2026–27. Map geometry is represented as game-board coordinates rather than a raster image.</p>
+    </footer>
+  </aside>
+
+  <section class="workspace">
+    <div class="canvas-wrap">
+      <canvas id="board" aria-label="60 by 44 inch battlefield planner"></canvas>
+    </div>
+    <div class="statusbar">
+      <span id="coords">x: — y: —</span>
+      <span id="selectedInfo">Nothing selected</span>
+      <span>60" × 44" • 1" grid • fixed map features use 0.5" coordinates • unit bases are free-positioned</span>
+    </div>
+  </section>
+</main>
+
+<script src="data/plans.js"></script>
+<script src="data/bases.js"></script>
+<script>
+(async function boot() {
+  try {
+    const response = await fetch('data/battleplans.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error('Could not load data/battleplans.json');
+    const data = await response.json();
+    window.BATTLEPLAN_DATA = data;
+    window.PLANS = data.plans || [];
+    window.MAP_DB = { ...data, maps: data.maps || {} };
+    window.MAPS = window.MAP_DB.maps;
+    const script = document.createElement('script');
+    script.src = 'app.js';
+    document.body.appendChild(script);
+  } catch (err) {
+    document.body.innerHTML = '<main style="padding:2rem;font-family:system-ui"><h1>Could not load battleplan data</h1><p>Run the app from a local web server (for example: <code>python3 -m http.server 8000</code>) so the JSON file can be fetched.</p><pre>' + err + '</pre></main>';
+  }
+})();
+</script>
+</body>
+</html>

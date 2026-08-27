@@ -1,0 +1,2376 @@
+{
+  "schemaVersion": "3.0",
+  "source": "Wahapedia \u2014 General\u2019s Handbook 2026-27, Battleplan Maps",
+  "sourceUrl": "https://wahapedia.ru/aos4/the-rules/general-s-handbook-2026-27/",
+  "lastUpdated": "2026-08-20",
+  "instructions": {
+    "editing": "Edit this JSON file to tune battleplan geometry. Fixed map features use inch coordinates and snapStepIn=0.5. Unit bases and measurement circles are free-positioned by the app.",
+    "territories": "Territories are rectangles in battlefield inches, origin at the top-left.",
+    "objectives": "Objective x/y are the centre of the 40mm marker. The surrounding control zone extends 3 inches from the marker.",
+    "terrain": "Terrain/place-of-power x/y are planning anchors and are constrained to the half-inch lattice.",
+    "nextSeason": "Copy this file and update schemaVersion, source, plans and maps for a future season without changing the rendering code."
+  },
+  "coordinateSystem": {
+    "units": "inches",
+    "origin": "top-left",
+    "width": 60,
+    "height": 44,
+    "sectionWidth": 15,
+    "sectionHeight": 11,
+    "objectiveLattice": "section corners and edge midpoints"
+  },
+  "constants": {
+    "objectiveTokenDiameterIn": 1.5748031496062993,
+    "objectiveControlRadiusIn": 3,
+    "objectiveControlDiameterIn": 7.574803149606299
+  },
+  "plans": [
+    {
+      "id": "1-1",
+      "name": "Into the Fire",
+      "scoring": [
+        "3VP \u2014 control at least 1 objective",
+        "3VP \u2014 control 2 or more objectives",
+        "4VP \u2014 control more objectives than your opponent"
+      ],
+      "twist": "Both players have Secure the Gateway. While you are the underdog, you have Determined Defenders.",
+      "rules": [
+        "Secure the Gateway: While you control the Place of Power wholly within friendly territory, friendly units' melee weapons have Anti-charge (+1 Rend) while contesting an objective you control.",
+        "Determined Defenders: Add 3 to the control scores of friendly units while they are wholly outside enemy territory."
+      ]
+    },
+    {
+      "id": "1-2",
+      "name": "Bloodstained Coasts",
+      "scoring": [
+        "3VP \u2014 control at least 1 objective",
+        "3VP \u2014 control 2 or more objectives",
+        "4VP \u2014 first battle round: control more objectives than your opponent",
+        "4VP \u2014 from the second battle round: control an objective that was controlled by your opponent at the start of the turn"
+      ],
+      "twist": "From the second battle round onwards, both players can use Emberstone-Augmented Weapons and Emberstone Cache.",
+      "rules": [
+        "Emberstone-Augmented Weapons: A friendly unit that charged this turn and has emberstone slivers can gain +1 to hit or +1 to wound for its combat attacks; the slivers are then removed according to the underdog rule.",
+        "Emberstone Cache: Once per turn in your Hero Phase, give an emberstone sliver to a friendly unit contesting an objective you control."
+      ]
+    },
+    {
+      "id": "1-3",
+      "name": "Avalanche of Ash",
+      "scoring": [
+        "3VP \u2014 control at least 1 objective",
+        "3VP \u2014 control 2 or more objectives",
+        "4VP \u2014 control more objectives than your opponent",
+        "3VP \u2014 no more than 1 objective remains and you control a non-FACTION terrain feature in enemy territory",
+        "7VP \u2014 no objectives remain and you control more non-FACTION terrain features than your opponent"
+      ],
+      "twist": "If you are the underdog, you must use Collapsing Pass.",
+      "rules": [
+        "Collapsing Pass: At the start of each battle round, pick every objective as a target and choose one as the focus. Roll for each target, adding 1 for each unit contesting it; the focus can modify its roll by +3 or -3. On 8+, remove that objective."
+      ]
+    },
+    {
+      "id": "1-4",
+      "name": "Caverns of Slaughter",
+      "scoring": [
+        "3VP \u2014 control at least 1 objective",
+        "3VP \u2014 control 2 or more objectives",
+        "4VP \u2014 control any pair of objectives"
+      ],
+      "twist": "If you are the underdog, you can use Shifting Passages. Both players can use Navigate the Tunnels.",
+      "rules": [
+        "Shifting Passages: At the start of each battle round, choose 2 non-FACTION terrain features and give them hidden passage tokens after removing any existing tokens.",
+        "Navigate the Tunnels: Once per turn in your Movement Phase, a friendly unit wholly within 6\" of one marked terrain feature can be removed and set up wholly within 6\" of the other marked feature and more than 9\" from enemy units."
+      ]
+    },
+    {
+      "id": "1-5",
+      "name": "What's Yours Is Ours",
+      "scoring": [
+        "3VP \u2014 control at least 1 objective",
+        "3VP \u2014 control the coveted pair of objectives",
+        "4VP \u2014 control more objectives than your opponent"
+      ],
+      "twist": "On odd battle rounds the Golden Lions pair is coveted; on even battle rounds the Sun Seekers pair is coveted. If you are the underdog, you can use All the Rage.",
+      "rules": [
+        "All the Rage: At the start of the battle round, choose a pair of objectives; that pair is the coveted pair for the rest of the round."
+      ]
+    },
+    {
+      "id": "1-6",
+      "name": "Hidden Under Ash-Clouds",
+      "scoring": [
+        "3VP \u2014 control at least 1 objective",
+        "3VP \u2014 control 2 or more objectives",
+        "4VP \u2014 control more objectives than your opponent"
+      ],
+      "twist": "At the start of each battle round, the underdog chooses whether the ash-clouds are low-lying. If there is no underdog, they are low-lying.",
+      "rules": [
+        "Rolling Ash-Clouds: While low-lying, units and manifestations cannot be set up in neutral territory, cannot end a move there unless they began wholly there, and models/manifestations more than 3\" away cannot see through neutral territory unless a line between bases avoids it."
+      ]
+    },
+    {
+      "id": "2-1",
+      "name": "Warped Ruins",
+      "scoring": [
+        "3VP \u2014 control at least 1 objective",
+        "3VP \u2014 control any pair of objectives",
+        "4VP \u2014 control more objectives than your opponent"
+      ],
+      "twist": "Each non-FACTION terrain feature must be within 12\" of at least one other non-FACTION terrain feature. If you are the underdog, you must use Spreading Warpfire.",
+      "rules": [
+        "Spreading Warpfire: At the start of the battle round, choose an eligible non-flaming terrain feature; if one is already flaming, the new target must be within 12\" of it. The target remains flaming and units within 6\" of flaming terrain suffer D3 mortal damage."
+      ]
+    },
+    {
+      "id": "2-2",
+      "name": "Curse of the Gnaw",
+      "scoring": [
+        "3VP \u2014 control the Golden Lions objective",
+        "3VP \u2014 control the Sun Seekers objective",
+        "4VP \u2014 control more objectives than your opponent"
+      ],
+      "twist": "The instability level starts at 1. Each activation of a Place of Power increases it by 1, to a maximum of 6. After first-turn priority is decided, the underdog can use Echoes of Blight City.",
+      "rules": [
+        "Echoes of Blight City: Pick an objective and inflict mortal damage equal to the instability level on each unit contesting it, then reset the instability level to 1."
+      ]
+    },
+    {
+      "id": "2-3",
+      "name": "Seize the Embers",
+      "scoring": [
+        "3VP \u2014 control at least 1 objective",
+        "3VP \u2014 in battle round 1, control 2 or more objectives",
+        "3VP \u2014 from battle round 2, use Back to Base Camp this turn",
+        "4VP \u2014 control more objectives than your opponent"
+      ],
+      "twist": "Both players can use Search the Ruin and Back to Base Camp.",
+      "rules": [
+        "Search the Ruin: At the end of your turn, a friendly unit without an emberstone nugget contesting a Sun Seekers objective gains one; if you are the underdog it may immediately move 6\" but cannot end in combat.",
+        "Back to Base Camp: Once per turn at the end of your turn, a friendly unit with an emberstone nugget that is not set up this turn and contests a Golden Lions objective can remove its nugget."
+      ]
+    },
+    {
+      "id": "2-4",
+      "name": "Treacherous Ground",
+      "scoring": [
+        "3VP \u2014 control at least 1 stable objective",
+        "3VP \u2014 control 2 or more stable objectives",
+        "4VP \u2014 control more stable objectives than your opponent"
+      ],
+      "twist": "All objectives start stable. Both players must use Tread Carefully. From battle round 2 onwards, the underdog can use Violent Tremor.",
+      "rules": [
+        "Tread Carefully: At the start of the first battle round, each player must choose an objective in friendly territory; it is no longer stable.",
+        "Violent Tremor: At the start of a battle round, choose a pair of objectives and switch which one is stable."
+      ]
+    },
+    {
+      "id": "2-5",
+      "name": "Escape from the Coast",
+      "scoring": [
+        "3VP \u2014 control at least 1 objective",
+        "3VP \u2014 control 2 or more objectives",
+        "4VP \u2014 control more objectives than your opponent"
+      ],
+      "twist": "If you are the underdog, you can use To the Ships!.",
+      "rules": [
+        "To the Ships!: At the start of the battle round, pick the Heldenhain or a Sun Seekers objective and remove it from the battlefield."
+      ]
+    },
+    {
+      "id": "2-6",
+      "name": "Power of the Realms",
+      "scoring": [
+        "3VP \u2014 control the primary objective",
+        "3VP \u2014 control 2 or more secondary objectives",
+        "4VP \u2014 control more objectives than your opponent"
+      ],
+      "twist": "At the start of the battle, the Sun Seekers objective is primary and all others are secondary. If you are the underdog, you can use Arcane Charge.",
+      "rules": [
+        "Arcane Charge: At the start of the battle round, choose a Place of Power you control. Draw a line from the primary objective to it; if the line crosses secondary objectives, the first crossed secondary objective becomes primary and all others become secondary."
+      ]
+    }
+  ],
+  "maps": {
+    "1-1": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 11,
+            "w": 30,
+            "h": 22
+          }
+        ],
+        "defender": [
+          {
+            "x": 30,
+            "y": 11,
+            "w": 30,
+            "h": 22
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 30,
+          "y": 5.5,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 15,
+          "y": 22,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 30,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 45,
+          "y": 22,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 30,
+          "y": 38.5,
+          "icon": "black",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 15,
+          "y": 5.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 16.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "place-of-power",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 11,
+          "w": 4,
+          "h": 6,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "place-of-power",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 27.5,
+          "w": 4,
+          "h": 6,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 38.5,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 27.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 45,
+          "y": 38.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 11,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "1-2": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 30,
+            "h": 33
+          }
+        ],
+        "defender": [
+          {
+            "x": 30,
+            "y": 11,
+            "w": 30,
+            "h": 33
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 30,
+          "y": 16.5,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 45,
+          "y": 11,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 15,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 45,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 30,
+          "y": 27.5,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 5.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 5.5,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 22,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 22,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 38.5,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 38.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "1-3": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 30,
+            "h": 33
+          }
+        ],
+        "defender": [
+          {
+            "x": 30,
+            "y": 11,
+            "w": 30,
+            "h": 33
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 15,
+          "y": 11,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 30,
+          "y": 11,
+          "icon": "black",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 45,
+          "y": 11,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 15,
+          "y": 33,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 30,
+          "y": 33,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O6",
+          "x": 45,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 5.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 5.5,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 22,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 22,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 38.5,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 38.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "1-4": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 11,
+            "w": 30,
+            "h": 22
+          }
+        ],
+        "defender": [
+          {
+            "x": 30,
+            "y": 11,
+            "w": 30,
+            "h": 22
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 15,
+          "y": 11,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 30,
+          "y": 11,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 30,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 30,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 45,
+          "y": 33,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 5.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 11,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 33,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 38.5,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 38.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 5.5,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "1-5": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 30,
+            "h": 22
+          },
+          {
+            "x": 45,
+            "y": 0,
+            "w": 15,
+            "h": 11
+          }
+        ],
+        "defender": [
+          {
+            "x": 0,
+            "y": 22,
+            "w": 30,
+            "h": 22
+          },
+          {
+            "x": 45,
+            "y": 33,
+            "w": 15,
+            "h": 11
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 15,
+          "y": 22,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 30,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 45,
+          "y": 22,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 45,
+          "y": 11,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 45,
+          "y": 33,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 15,
+          "y": 11,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 5.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 22,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 22,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "place-of-power",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 22,
+          "w": 4,
+          "h": 6,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 15,
+          "y": 33,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 38.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "1-6": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 60,
+            "h": 11
+          },
+          {
+            "x": 0,
+            "y": 11,
+            "w": 30,
+            "h": 11
+          }
+        ],
+        "defender": [
+          {
+            "x": 0,
+            "y": 33,
+            "w": 60,
+            "h": 11
+          },
+          {
+            "x": 30,
+            "y": 22,
+            "w": 30,
+            "h": 11
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 37.5,
+          "y": 11,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 15,
+          "y": 22,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 30,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 45,
+          "y": 22,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 22.5,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "place-of-power",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 11,
+          "w": 5,
+          "h": 6,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 11,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 16.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 11,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 27.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 27.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 33,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "place-of-power",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 33,
+          "w": 5,
+          "h": 6,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "2-1": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 30,
+            "h": 22
+          },
+          {
+            "x": 45,
+            "y": 0,
+            "w": 15,
+            "h": 11
+          }
+        ],
+        "defender": [
+          {
+            "x": 0,
+            "y": 22,
+            "w": 30,
+            "h": 22
+          },
+          {
+            "x": 45,
+            "y": 33,
+            "w": 15,
+            "h": 11
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 22.5,
+          "y": 11,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 37.5,
+          "y": 11,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 15,
+          "y": 22,
+          "icon": "black",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 45,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 22.5,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O6",
+          "x": 37.5,
+          "y": 33,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 10.5,
+          "y": 11,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 22,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 22,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 22,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 10.5,
+          "y": 33,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 45,
+          "y": 33,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 45,
+          "y": 11,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "2-2": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 11,
+            "w": 15,
+            "h": 33
+          },
+          {
+            "x": 15,
+            "y": 22,
+            "w": 30,
+            "h": 22
+          }
+        ],
+        "defender": [
+          {
+            "x": 15,
+            "y": 0,
+            "w": 45,
+            "h": 22
+          },
+          {
+            "x": 45,
+            "y": 22,
+            "w": 15,
+            "h": 22
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 15,
+          "y": 11,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 45,
+          "y": 11,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 30,
+          "y": 22,
+          "icon": "black",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 15,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 45,
+          "y": 33,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 5.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 16.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 11,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 22,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 33,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 27.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 38.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 22,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "2-3": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 60,
+            "h": 22
+          }
+        ],
+        "defender": [
+          {
+            "x": 0,
+            "y": 22,
+            "w": 60,
+            "h": 22
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 22.5,
+          "y": 11,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 37.5,
+          "y": 11,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 15,
+          "y": 22,
+          "icon": "black",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 45,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 22.5,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O6",
+          "x": 37.5,
+          "y": 33,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 10.5,
+          "y": 11,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 22,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 22,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 22,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 10.5,
+          "y": 33,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 45,
+          "y": 33,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 45,
+          "y": 11,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "2-4": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 60,
+            "h": 11
+          },
+          {
+            "x": 15,
+            "y": 11,
+            "w": 30,
+            "h": 11
+          }
+        ],
+        "defender": [
+          {
+            "x": 0,
+            "y": 22,
+            "w": 60,
+            "h": 11
+          },
+          {
+            "x": 15,
+            "y": 22,
+            "w": 30,
+            "h": 11
+          },
+          {
+            "x": 0,
+            "y": 33,
+            "w": 60,
+            "h": 11
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 15,
+          "y": 11,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 45,
+          "y": 11,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 7.5,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 52.5,
+          "y": 22,
+          "icon": "black",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 15,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O6",
+          "x": 45,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 11,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 11,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 22,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "place-of-power",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 22,
+          "w": 3,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 33,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 33,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 38.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 5.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "2-5": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 30,
+            "h": 22
+          },
+          {
+            "x": 30,
+            "y": 0,
+            "w": 30,
+            "h": 11
+          }
+        ],
+        "defender": [
+          {
+            "x": 0,
+            "y": 22,
+            "w": 30,
+            "h": 22
+          },
+          {
+            "x": 30,
+            "y": 33,
+            "w": 30,
+            "h": 11
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 7.5,
+          "y": 11,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 45,
+          "y": 11,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 30,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 45,
+          "y": 22,
+          "icon": "black",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 7.5,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O6",
+          "x": 45,
+          "y": 33,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 11,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 5.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 7.5,
+          "y": 22,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 33,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "obscuring",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 22,
+          "w": 6,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "place-of-power",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 52.5,
+          "y": 22,
+          "w": 4,
+          "h": 6,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 38.5,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 15,
+          "y": 22,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    },
+    "2-6": {
+      "territories": {
+        "attacker": [
+          {
+            "x": 0,
+            "y": 0,
+            "w": 60,
+            "h": 22
+          }
+        ],
+        "defender": [
+          {
+            "x": 0,
+            "y": 22,
+            "w": 60,
+            "h": 22
+          }
+        ]
+      },
+      "objectives": [
+        {
+          "id": "O1",
+          "x": 30,
+          "y": 11,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O2",
+          "x": 15,
+          "y": 22,
+          "icon": "cyan",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O3",
+          "x": 30,
+          "y": 22,
+          "icon": "yellow",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O4",
+          "x": 45,
+          "y": 22,
+          "icon": "black",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        },
+        {
+          "id": "O5",
+          "x": 30,
+          "y": 33,
+          "icon": "red",
+          "tokenDiameterIn": 1.5748031496062993,
+          "controlRadiusIn": 3,
+          "snapStepIn": 0.5,
+          "role": "Aqshian objective"
+        }
+      ],
+      "terrain": [
+        {
+          "id": "T1",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 15,
+          "y": 11,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T2",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 45,
+          "y": 11,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T3",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 22.5,
+          "y": 5.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T4",
+          "kind": "place-of-power",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 4.5,
+          "y": 22,
+          "w": 5,
+          "h": 6,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T5",
+          "kind": "place-of-power",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 55.5,
+          "y": 22,
+          "w": 5,
+          "h": 6,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T6",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 15,
+          "y": 33,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T7",
+          "kind": "area-or-obstacle",
+          "size": "medium",
+          "shape": "ellipse",
+          "x": 45,
+          "y": 33,
+          "w": 7,
+          "h": 5,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        },
+        {
+          "id": "T8",
+          "kind": "obscuring",
+          "size": "small",
+          "shape": "ellipse",
+          "x": 37.5,
+          "y": 38.5,
+          "w": 4,
+          "h": 4,
+          "rotationDeg": 0,
+          "snapStepIn": 0.5
+        }
+      ],
+      "layoutNotes": "Reconstructed from the battleplan map in the supplied General\u2019s Handbook 2026-27 PDF. Fixed map features use a 0.5-inch coordinate lattice; unit bases are free-positioned."
+    }
+  }
+}
