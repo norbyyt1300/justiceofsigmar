@@ -749,4 +749,229 @@ window.BASES=[
     "unit": "280 x 210mm base",
     "base": "280 x 210mm"
   }
+,
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Beast-smasher Mega-Gargant",
+    "base": "130mm",
+    "source": "Wahapedia / April 2026 Battle Profiles"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Gatebreaker Mega-Gargant",
+    "base": "130mm",
+    "source": "Wahapedia / April 2026 Battle Profiles"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "King Brodd",
+    "base": "130mm",
+    "source": "Wahapedia / April 2026 Battle Profiles"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Kragnos, the End of Empires",
+    "base": "130mm",
+    "source": "Wahapedia / April 2026 Battle Profiles"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Kraken-eater Mega-Gargant",
+    "base": "130mm",
+    "source": "Wahapedia / April 2026 Battle Profiles"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Warstomper Mega-Gargant",
+    "base": "130mm",
+    "source": "Wahapedia / April 2026 Battle Profiles"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Scourge of Aqshy Gatebreaker Mega-Gargant",
+    "base": "130mm",
+    "source": "Wahapedia / Scourge of Aqshy"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Scourge of Ghyran Kraken-eater Mega-Gargant",
+    "base": "130mm",
+    "source": "Wahapedia / Scourge of Ghyran"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Mancrusher Gargant",
+    "base": "90 x 52mm",
+    "source": "Wahapedia / April 2026 Battle Profiles"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Mancrusher Mob",
+    "base": "90 x 52mm",
+    "source": "Wahapedia / April 2026 Battle Profiles"
+  },
+  {
+    "grandFaction": "Order",
+    "army": "Stormcast Eternals",
+    "unit": "Scourge of Aqshy Iridan the Witness",
+    "base": "120 x 92mm",
+    "source": "Wahapedia / Scourge of Aqshy"
+  },
+  {
+    "grandFaction": "Order",
+    "army": "Stormcast Eternals",
+    "unit": "Scourge of Aqshy Stormstrike Palladors",
+    "base": "90 x 52mm",
+    "source": "Wahapedia / Scourge of Aqshy"
+  },
+  {
+    "grandFaction": "Death",
+    "army": "Nighthaunt",
+    "unit": "Scourge of Aqshy Spirit Hosts",
+    "base": "50mm",
+    "source": "Wahapedia / Scourge of Aqshy"
+  },
+  {
+    "grandFaction": "Death",
+    "army": "Flesh-Eater Courts",
+    "unit": "Scourge of Ghyran Abhorrant Ghoul King",
+    "base": "32mm",
+    "source": "Wahapedia / Scourge of Ghyran"
+  },
+  {
+    "grandFaction": "Death",
+    "army": "Flesh-Eater Courts",
+    "unit": "Scourge of Ghyran Abhorrant Gorewarden",
+    "base": "40mm",
+    "source": "Wahapedia / Scourge of Ghyran"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Ogor Mawtribes",
+    "unit": "Scourge of Ghyran Ironblaster",
+    "base": "120 x 92mm",
+    "source": "Wahapedia / Scourge of Ghyran"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Hedonites of Slaanesh",
+    "unit": "Scourge of Ghyran Syll’Esske, the Vengeful Allegiance",
+    "base": "50mm",
+    "source": "Wahapedia / Scourge of Ghyran"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Hedonites of Slaanesh",
+    "unit": "Lord of Hysteria",
+    "base": "40mm",
+    "source": "Wahapedia / Battletome 2026"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Hedonites of Slaanesh",
+    "unit": "Thricefold Discord",
+    "base": "mixed: Vexmor 40mm; Vashtiss and Lascivyr 28.5mm",
+    "source": "Wahapedia / Battletome 2026"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Maggotkin of Nurgle",
+    "unit": "Scourge of Ghyran Rotigus",
+    "base": "130mm",
+    "source": "Wahapedia / Scourge of Ghyran"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Disciples of Tzeentch",
+    "unit": "Scourge of Aqshy Screamers of Tzeentch",
+    "base": "32mm",
+    "source": "Wahapedia / Scourge of Aqshy"
+  },
+  {
+    "grandFaction": "Order",
+    "army": "Daughters on Khaine",
+    "unit": "Scourge of Aqshy Melusai Ironscale",
+    "base": "40mm",
+    "source": "Wahapedia / Scourge of Aqshy"
+  },
+  {
+    "grandFaction": "Order",
+    "army": "Sylvaneth",
+    "unit": "Scourge of Ghyran Drycha Hamadreth",
+    "base": "105 x 70mm",
+    "source": "Wahapedia / Scourge of Ghyran"
+  },
+  {
+    "grandFaction": "Order",
+    "army": "Lumineth Realm-lords",
+    "unit": "Vanari Lord Regent on Lightcourser",
+    "base": "90 x 52mm",
+    "source": "Wahapedia / current warscrolls"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Helsmiths of Hashut",
+    "unit": "Ashen Elder",
+    "base": "32mm",
+    "source": "Wahapedia / Helsmiths of Hashut"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Helsmiths of Hashut",
+    "unit": "Daemonsmith",
+    "base": "32mm",
+    "source": "Wahapedia / Helsmiths of Hashut"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Helsmiths of Hashut",
+    "unit": "War Despot",
+    "base": "32mm",
+    "source": "Wahapedia / Helsmiths of Hashut"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Helsmiths of Hashut",
+    "unit": "Urak Taar, the First Daemonsmith",
+    "base": "130mm",
+    "source": "Wahapedia / Helsmiths of Hashut"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Helsmiths of Hashut",
+    "unit": "Scourge of Ghyran Infernal Cohort with Hashutite Blades",
+    "base": "28.5mm",
+    "source": "Wahapedia / Scourge of Ghyran"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Helsmiths of Hashut",
+    "unit": "Infernal Taurus",
+    "base": "130mm",
+    "source": "Wahapedia / Helsmiths of Hashut"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Skaven",
+    "unit": "Deathmaster Crixxit",
+    "base": "40mm",
+    "source": "Wahapedia / Battletome Supplement: Skaven Eshin"
+  },
+  {
+    "grandFaction": "Chaos",
+    "army": "Skaven",
+    "unit": "Gutter Runners",
+    "base": "mixed: Champion 32mm; other models 28.5mm",
+    "source": "Wahapedia / Battletome Supplement: Skaven Eshin"
+  }
 ];
