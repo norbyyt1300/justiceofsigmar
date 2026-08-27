@@ -8,7 +8,7 @@ A dependency-free browser planner for Warhammer Age of Sigmar 4th edition battle
 python3 -m http.server 8000
 ```
 
-Open `http://localhost:8000/`.
+Open http://localhost:8000/
 
 Or access the current version of this project online here: https://norbyyt1300.github.io/justiceofsigmar/
 
