@@ -30,7 +30,6 @@ const state = {
   army: 'blue',
   armies: {blue:{name:'Blue Army'}, red:{name:'Red Army'}},
   units: [],
-  measurements: [],
   selected: null,
   showGrid: true,
   showSections: true,
@@ -42,6 +41,10 @@ const state = {
   history: [],
   future: [],
   dragging: null,
+  measurements: [],
+  selectedMeasurement: null,
+  trailMode: false,
+  trails: [],
   canvasScale: 1
 };
 
@@ -74,6 +77,23 @@ function parseBase(base){
   const d=parseFloat(base);
   return {w:d/MM_PER_INCH,h:d/MM_PER_INCH};
 }
+function unitDisplayName(u){return (u.customName||u.unit||'Unit').trim();}
+function unitAbbreviation(name){
+  const words=String(name||'Unit').trim().split(/\s+/).filter(Boolean);
+  let initials=words.map(w=>Array.from(w)[0].toUpperCase()).join('');
+  if(initials.length>7) initials=initials.slice(0,7);
+  return initials||'U';
+}
+function unitLabel(u){
+  const same=state.units.filter(x=>x.army===u.army&&normalize(unitDisplayName(x))===normalize(unitDisplayName(u)));
+  const suffix=same.length>1?String(same.indexOf(u)+1):'';
+  return unitAbbreviation(unitDisplayName(u))+suffix;
+}
+function renameSelectedUnit(name){
+  const u=state.units.find(x=>x.id===state.selected); if(!u)return;
+  const value=String(name||'').trim(); if(!value)return;
+  record(); u.customName=value; renderArmy(); draw();
+}
 function idForArmy(army){
   const prefix=army==='blue'?'B':'R';
   let n=1; while(state.units.some(u=>u.army===army && u.id===prefix+n)) n++;
@@ -86,9 +106,9 @@ function record(){
 }
 function snapshot(includeHistory=true){
   const s={
-    planId:state.planId,army:state.army,armies:clone(state.armies),units:clone(state.units),measurements:clone(state.measurements),
+    planId:state.planId,army:state.army,armies:clone(state.armies),units:clone(state.units),
     showGrid:state.showGrid,showSections:state.showSections,showRulers:state.showRulers,
-    showObjectives:state.showObjectives,showTerrain:state.showTerrain,showLabels:state.showLabels,snap:state.snap
+    showObjectives:state.showObjectives,showTerrain:state.showTerrain,showLabels:state.showLabels,measurements:clone(state.measurements),trailMode:state.trailMode,trails:clone(state.trails)
   };
   if(includeHistory){s.history=clone(state.history);s.future=clone(state.future);}
   return s;
@@ -98,7 +118,6 @@ function restore(s){
   state.army=s.army||'blue';
   state.armies=clone(s.armies||{blue:{name:'Blue Army'},red:{name:'Red Army'}});
   state.units=clone(s.units||[]);
-  state.measurements=clone(s.measurements||[]);
   state.showGrid=s.showGrid!==false;
   state.showSections=s.showSections!==false;
   state.showRulers=s.showRulers!==false;
@@ -106,6 +125,10 @@ function restore(s){
   state.showTerrain=s.showTerrain!==false;
   state.showLabels=s.showLabels!==false;
   state.snap=s.snap!==false;
+  state.measurements=clone(s.measurements||[]);
+  state.trailMode=s.trailMode===true;
+  state.trails=clone(s.trails||[]);
+  state.selectedMeasurement=null;
   state.selected=null;
   planSelect.value=state.planId;
   syncLayerControls();
@@ -124,24 +147,13 @@ function addUnit(entry, army=state.army, count=1){
 }
 function removeSelected(){
   if(!state.selected)return;
-  const ui=state.units.findIndex(u=>u.id===state.selected);
-  if(ui>=0){record();state.units.splice(ui,1);state.selected=null;renderArmy();draw();return;}
-  const mi=state.measurements.findIndex(m=>m.id===state.selected);
-  if(mi>=0){record();state.measurements.splice(mi,1);state.selected=null;renderArmy();draw();}
+  const i=state.units.findIndex(u=>u.id===state.selected);
+  if(i<0)return;
+  record(); state.units.splice(i,1); state.selected=null; renderArmy(); draw();
 }
 function clearUnits(){
   if(!state.units.length)return;
   record(); state.units=[]; state.selected=null; renderArmy(); draw();
-}
-function addMeasurement(){
-  const input=document.getElementById('measurementDiameter');
-  const diameter=parseFloat(input.value);
-  if(!Number.isFinite(diameter)||diameter<=0||diameter>BOARD_W*2){alert('Enter a positive diameter in inches.');return;}
-  record();
-  let n=1;while(state.measurements.some(m=>m.id===`M${n}`))n++;
-  const m={id:`M${n}`,diameter,x:BOARD_W/2,y:BOARD_H/2};
-  const pos=clampMeasurement(m,m.x,m.y);m.x=pos.x;m.y=pos.y;
-  state.measurements.push(m);state.selected=m.id;renderArmy();draw();
 }
 function undo(){
   if(!state.history.length)return;
@@ -158,8 +170,9 @@ function populatePlans(){
   planSelect.value=state.planId;
 }
 function validateMapGeometry(map){
+  const xPoints=new Set([0,7.5,15,22.5,30,37.5,45,52.5,60]);
+  const yPoints=new Set([0,5.5,11,16.5,22,27.5,33,38.5,44]);
   const errors=[];
-  const isHalfInch=v=>Math.abs(v*2-Math.round(v*2))<1e-9;
   const inBoard=(x,y)=>x>=0&&x<=BOARD_W&&y>=0&&y<=BOARD_H;
   for(const side of ['attacker','defender']){
     for(const r of (map.territories?.[side]||[])){
@@ -169,11 +182,11 @@ function validateMapGeometry(map){
   }
   for(const o of (map.objectives||[])){
     if(!inBoard(o.x,o.y)) errors.push(`${o.id} outside board`);
-    if(!isHalfInch(o.x)||!isHalfInch(o.y)) errors.push(`${o.id} is not on the 0.5-inch fixed-feature lattice`);
+    if(!xPoints.has(o.x)||!yPoints.has(o.y)||(o.x%15!==0&&o.y%11!==0)) errors.push(`${o.id} is not on the section corner/edge-midpoint lattice`);
   }
   for(const t of (map.terrain||[])){
     if(!inBoard(t.x,t.y)) errors.push(`${t.id} outside board`);
-    if(!isHalfInch(t.x)||!isHalfInch(t.y)) errors.push(`${t.id} is not on the 0.5-inch fixed-feature lattice`);
+    if(Math.abs(t.x*2-Math.round(t.x*2))>1e-6||Math.abs(t.y*2-Math.round(t.y*2))>1e-6) errors.push(`${t.id} is not on the 0.5 inch lattice`);
   }
   return errors;
 }
@@ -224,8 +237,20 @@ function renderArmy(){
   const filtered=BASES.filter(b=>!q||normalize(b.unit).includes(q)||normalize(b.army).includes(q)||normalize(b.grandFaction).includes(q)).slice(0,80);
   unitResults.innerHTML=filtered.map(b=>`<div class="unit-result" data-index="${BASES.indexOf(b)}"><strong>${b.unit}</strong><small>${b.army} • ${b.base}</small></div>`).join('')||'<div class="unit-result">No match — use a base preset or import your list.</div>';
   const own=state.units.filter(u=>u.army===state.army);
-  armyKey.innerHTML=own.length?own.map(u=>`<div class="key-row"><span class="swatch" style="background:${u.army==='blue'?'#3488ff':'#ef4f55'}"></span><span class="key-id">${u.id}</span><span>${u.unit}</span><span style="margin-left:auto;color:#9ca7b8">${u.base}</span></div>`).join(''):'<small>No units yet.</small>';
-  selectedInfo.textContent=state.selected?(()=>{const u=state.units.find(x=>x.id===state.selected);if(u)return `${u.id} • ${u.unit} • ${u.base} • ${u.x.toFixed(1)}", ${u.y.toFixed(1)}"`;const m=state.measurements.find(x=>x.id===state.selected);return m?`${m.id} • ${m.diameter.toFixed(1)}" diameter • ${m.x.toFixed(1)}", ${m.y.toFixed(1)}"`:'Nothing selected'})():'Nothing selected';
+  armyKey.innerHTML=own.length?own.map(u=>`<div class="key-row" title="${escapeHtml(unitDisplayName(u))}"><span class="swatch" style="background:${u.army==='blue'?'#3488ff':'#ef4f55'}"></span><span class="key-id">${u.id}</span><span>${escapeHtml(unitDisplayName(u))}</span><span style="margin-left:auto;color:#9ca7b8">${u.base}</span></div>`).join(''):'<small>No units yet.</small>';
+  const renameInput=document.getElementById('renameUnitInput'); const renameBtn=document.getElementById('renameUnitBtn');
+  const selectedUnit=state.units.find(x=>x.id===state.selected);
+  if(renameInput && document.activeElement!==renameInput) renameInput.value=selectedUnit?unitDisplayName(selectedUnit):'';
+  if(renameBtn) renameBtn.disabled=!selectedUnit;
+  if(state.selected){
+    const u=state.units.find(x=>x.id===state.selected);
+    selectedInfo.textContent=u?`${u.id} • ${u.unit} • ${u.base} • ${u.x.toFixed(1)}", ${u.y.toFixed(1)}"`:'Nothing selected';
+  } else if(state.selectedMeasurement){
+    const m=state.measurements.find(x=>x.id===state.selectedMeasurement);
+    selectedInfo.textContent=m?`${m.id} • ${m.diameter.toFixed(1).replace(/\.0$/,'')}" diameter • ${m.x.toFixed(1)}", ${m.y.toFixed(1)}"`:'Nothing selected';
+  } else {
+    selectedInfo.textContent='Nothing selected';
+  }
 }
 function resizeCanvas(){
   const wrap=canvas.parentElement;
@@ -241,16 +266,17 @@ function resizeCanvas(){
   state.canvasScale=backingPixelsPerInch;
   ctx.setTransform(backingPixelsPerInch,0,0,backingPixelsPerInch,0,0);
 }
-function objectiveName(icon){return {red:'Golden Lions',yellow:'Sun Seekers',cyan:'Heidenhain',black:'Scions of the Comet'}[icon]||'Aqshian objective';}
+function objectiveName(icon){return {red:'Red objective',yellow:'Yellow objective',cyan:'Blue objective',black:'Black objective'}[icon]||'Aqshian objective';}
 function objectiveColor(color){
   return {
     red:{fill:'rgba(239,79,85,.80)',stroke:'#a71f2a',text:'#fff'},
     yellow:{fill:'rgba(247,191,32,.82)',stroke:'#9d7410',text:'#161616'},
     cyan:{fill:'rgba(21,195,238,.78)',stroke:'#087c9b',text:'#06252e'},
-    black:{fill:'rgba(24,24,24,.90)',stroke:'#c8a83b',text:'#fff'}
+    black:{fill:'rgba(38,34,32,.86)',stroke:'#111',text:'#fff'}
   }[color]||{fill:'rgba(180,180,180,.7)',stroke:'#555',text:'#fff'};
 }
 function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function draw(){
   ctx.save();
   ctx.clearRect(0,0,BOARD_W,BOARD_H);
@@ -260,6 +286,7 @@ function draw(){
   if(state.showSections) drawSections();
   if(state.showTerrain) drawTerrain();
   if(state.showObjectives) drawObjectives();
+  drawMovementTrails();
   drawMeasurements();
   state.units.forEach(u=>drawUnit(u));
   if(state.showRulers) drawRulers();
@@ -382,24 +409,66 @@ function drawPlaceOfPower(t){
   ctx.beginPath();ctx.moveTo(0,-d*.40);ctx.lineTo(0,d*.20);ctx.lineTo(d*.10,d*.36);ctx.moveTo(0,d*.20);ctx.lineTo(-d*.15,d*.23);ctx.stroke();
   ctx.restore();
 }
+
+function drawMovementTrails(){
+  for(const trail of state.trails){
+    const pts=trail.points||[]; if(pts.length<2) continue;
+    const color=trail.army==='red'?'239,79,85':'52,136,255';
+    ctx.save();
+    ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
+    for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y);
+    ctx.strokeStyle=`rgba(${color},.34)`; ctx.lineWidth=.42; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.stroke();
+
+    // Small direction markers spaced along the path; no arrow is added at the endpoint.
+    const spacing=4.5, head=.42, half=.23;
+    let travelled=0, nextArrow=spacing;
+    for(let i=1;i<pts.length;i++){
+      const a=pts[i-1], b=pts[i], dx=b.x-a.x, dy=b.y-a.y;
+      const segLen=Math.hypot(dx,dy);
+      if(segLen<1e-6) continue;
+      while(travelled+segLen>=nextArrow){
+        const t=(nextArrow-travelled)/segLen;
+        const x=a.x+dx*t, y=a.y+dy*t;
+        const ux=dx/segLen, uy=dy/segLen, px=-uy, py=ux;
+        ctx.beginPath();
+        ctx.moveTo(x+ux*head,y+uy*head);
+        ctx.lineTo(x-ux*head+px*half,y-uy*head+py*half);
+        ctx.lineTo(x-ux*head-px*half,y-uy*head-py*half);
+        ctx.closePath();
+        ctx.fillStyle=`rgba(${color},.58)`; ctx.fill();
+        nextArrow+=spacing;
+      }
+      travelled+=segLen;
+    }
+    ctx.restore();
+  }
+}
+function clearMovementTrails(){
+  if(!state.trails.length) return;
+  record(); state.trails=[]; draw();
+}
+
 function drawMeasurements(){
   for(const m of state.measurements){
-    const selected=m.id===state.selected;
     const r=m.diameter/2;
+    const selected=m.id===state.selectedMeasurement;
     ctx.save();
     ctx.translate(m.x,m.y);
     ctx.beginPath();
     ctx.arc(0,0,r,0,Math.PI*2);
-    ctx.fillStyle=selected?'rgba(89,210,255,.10)':'rgba(89,210,255,.055)';
+    ctx.fillStyle=selected?'rgba(255,255,255,.10)':'rgba(255,255,255,.055)';
     ctx.fill();
-    ctx.setLineDash([.22,.14]);
-    ctx.lineWidth=selected?.10:.07;
-    ctx.strokeStyle=selected?'rgba(155,235,255,.90)':'rgba(89,210,255,.58)';
+    ctx.lineWidth=selected?.10:.055;
+    ctx.strokeStyle=selected?'rgba(255,255,255,.78)':'rgba(220,230,240,.42)';
+    ctx.setLineDash([.25,.18]);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.font='700 .55px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillStyle='rgba(10,35,45,.90)';
-    ctx.fillText(`${m.diameter.toFixed(1)}\"`,0,0);
+    if(state.showLabels){
+      ctx.font='700 .52px system-ui';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillStyle='rgba(255,255,255,.82)';
+      ctx.fillText(`${m.diameter.toFixed(1).replace(/\.0$/,'')}"`,0,0);
+    }
     ctx.restore();
   }
 }
@@ -411,8 +480,15 @@ function drawUnit(u){
   ctx.beginPath();ctx.ellipse(0,0,u.w/2,u.h/2,0,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();ctx.lineWidth=selected?.16:.07;ctx.strokeStyle=selected?'#fff':stroke;ctx.stroke();
   if(selected){ctx.setLineDash([.15,.12]);ctx.strokeStyle='#fff';ctx.lineWidth=.06;ctx.stroke();ctx.setLineDash([]);}
   if(state.showLabels){
-    const fs=Math.max(.35,Math.min(1.1,Math.min(u.w,u.h)*.62));
-    ctx.font=`800 ${fs}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.strokeStyle='#0009';ctx.lineWidth=.06;ctx.strokeText(u.id,0,0);ctx.fillText(u.id,0,0);
+    const label=unitLabel(u);
+    const fs=Math.max(.28,Math.min(.72,Math.min(u.w,u.h)*.48));
+    ctx.font=`800 ${fs}px system-ui`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.strokeStyle='#000b';ctx.lineWidth=.07;ctx.strokeText(label,0,0);ctx.fillText(label,0,0);
+  }
+  // Rotation handles are only needed for non-circular (oval) bases.
+  if(selected && Math.abs(u.w-u.h)>.01){
+    const hy=-u.h/2-.42; ctx.beginPath();ctx.moveTo(0,-u.h/2);ctx.lineTo(0,hy);ctx.strokeStyle='#fff';ctx.lineWidth=.10;ctx.stroke();
+    ctx.beginPath();ctx.arc(0,hy,.27,0,Math.PI*2);ctx.fillStyle='#f8d66d';ctx.fill();ctx.lineWidth=.09;ctx.strokeStyle='#202733';ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-.12,hy);ctx.lineTo(.12,hy);ctx.moveTo(0,hy-.12);ctx.lineTo(0,hy+.12);ctx.strokeStyle='#202733';ctx.lineWidth=.06;ctx.stroke();
   }
   ctx.restore();
 }
@@ -420,25 +496,51 @@ function pointerToBoard(e){
   const r=canvas.getBoundingClientRect();
   return {x:(e.clientX-r.left)/r.width*BOARD_W,y:(e.clientY-r.top)/r.height*BOARD_H};
 }
+function hitTestRotationHandle(pt){
+  const u=state.units.find(x=>x.id===state.selected); if(!u||Math.abs(u.w-u.h)<=.01)return null;
+  const a=(u.rotation||0)*Math.PI/180, hx=u.x+Math.sin(a)*(u.h/2+.42), hy=u.y-Math.cos(a)*(u.h/2+.42);
+  return Math.hypot(pt.x-hx,pt.y-hy)<=.38?u:null;
+}
 function hitTest(pt){
-  // Units are the top interactive layer and never snap to the grid.
   for(let i=state.units.length-1;i>=0;i--){
     const u=state.units[i]; const dx=pt.x-u.x,dy=pt.y-u.y,a=(u.rotation||0)*Math.PI/180;
     const rx=dx*Math.cos(-a)-dy*Math.sin(-a), ry=dx*Math.sin(-a)+dy*Math.cos(-a);
-    if((rx/(u.w/2))**2+(ry/(u.h/2))**2<=1)return {type:'unit',item:u};
-  }
-  for(let i=state.measurements.length-1;i>=0;i--){
-    const m=state.measurements[i]; const dx=pt.x-m.x,dy=pt.y-m.y;
-    if(dx*dx+dy*dy<=(m.diameter/2)**2)return {type:'measurement',item:m};
+    if((rx/(u.w/2))**2+(ry/(u.h/2))**2<=1)return u;
   }
   return null;
 }
-function clampUnit(u,x,y){
-  return {x:Math.max(u.w/2,Math.min(BOARD_W-u.w/2,x)),y:Math.max(u.h/2,Math.min(BOARD_H-u.h/2,y))};
+function nextMeasurementId(){
+  let n=1;
+  while(state.measurements.some(m=>m.id==='M'+n)) n++;
+  return 'M'+n;
 }
-function clampMeasurement(m,x,y){
-  const r=m.diameter/2;
-  return {x:Math.max(r,Math.min(BOARD_W-r,x)),y:Math.max(r,Math.min(BOARD_H-r,y))};
+function addMeasurement(){
+  const value=Math.max(0.1,parseFloat(document.getElementById('measurementSize').value)||9);
+  const mode=document.getElementById('measurementMode').value;
+  const diameter=mode==='radius'?value*2:value;
+  record();
+  state.measurements.push({id:nextMeasurementId(),diameter,x:BOARD_W/2,y:BOARD_H/2});
+  state.selectedMeasurement=state.measurements[state.measurements.length-1].id;
+  state.selected=null;
+  renderArmy(); draw();
+}
+function hitTestMeasurement(pt){
+  for(let i=state.measurements.length-1;i>=0;i--){
+    const m=state.measurements[i],r=m.diameter/2;
+    if(Math.hypot(pt.x-m.x,pt.y-m.y)<=r+0.35) return m;
+  }
+  return null;
+}
+function removeSelected(){
+  if(state.selected){
+    const i=state.units.findIndex(u=>u.id===state.selected);
+    if(i>=0){record();state.units.splice(i,1);state.selected=null;renderArmy();draw();return;}
+  }
+  if(state.selectedMeasurement){
+    const i=state.measurements.findIndex(m=>m.id===state.selectedMeasurement);
+    if(i>=0){record();state.measurements.splice(i,1);state.selectedMeasurement=null;draw();return;}
+  }
+  if(!state.selected&&!state.selectedMeasurement) return;
 }
 function syncLayerControls(){
   document.getElementById('gridToggle').checked=state.showGrid;
@@ -446,30 +548,69 @@ function syncLayerControls(){
   document.getElementById('rulersToggle').checked=state.showRulers;
   document.getElementById('objectivesToggle').checked=state.showObjectives;
   document.getElementById('terrainToggle').checked=state.showTerrain;
+  const trailToggle=document.getElementById('trailModeToggle'); if(trailToggle) trailToggle.checked=state.trailMode;
 }
 
 canvas.addEventListener('pointerdown',e=>{
-  const pt=pointerToBoard(e),hit=hitTest(pt);
-  state.selected=hit?.item.id||null; renderArmy(); draw();
-  if(hit){
-    record();
-    state.dragging={type:hit.type,id:hit.item.id,dx:pt.x-hit.item.x,dy:pt.y-hit.item.y};
-    canvas.setPointerCapture(e.pointerId);
+  const pt=pointerToBoard(e);
+  const rotateUnit=hitTestRotationHandle(pt);
+  if(rotateUnit){
+    record(); const startAngle=Math.atan2(pt.y-rotateUnit.y,pt.x-rotateUnit.x);
+    state.dragging={type:'rotate',id:rotateUnit.id,startAngle,startRotation:rotateUnit.rotation||0};
+    canvas.setPointerCapture(e.pointerId); return;
   }
+  const u=hitTest(pt);
+  if(u){
+    state.selected=u.id;
+    state.selectedMeasurement=null;
+    record();
+    let trailIndex=null;
+    if(state.trailMode){
+      state.trails.push({id:`T${Date.now()}-${state.trails.length}`,unitId:u.id,army:u.army,points:[{x:u.x,y:u.y}]});
+      trailIndex=state.trails.length-1;
+    }
+    state.dragging={type:'unit',id:u.id,dx:pt.x-u.x,dy:pt.y-u.y,trailIndex,lastTrailX:u.x,lastTrailY:u.y};
+    renderArmy(); draw(); canvas.setPointerCapture(e.pointerId); return;
+  }
+  const m=hitTestMeasurement(pt);
+  if(m){
+    state.selected=null;
+    state.selectedMeasurement=m.id;
+    record();
+    state.dragging={type:'measurement',id:m.id,dx:pt.x-m.x,dy:pt.y-m.y};
+    renderArmy(); draw(); canvas.setPointerCapture(e.pointerId); return;
+  }
+  state.selected=null;
+  state.selectedMeasurement=null;
+  renderArmy(); draw();
 });
 canvas.addEventListener('pointermove',e=>{
   const pt=pointerToBoard(e);
   coordsEl.textContent=`x: ${pt.x.toFixed(1)}\"  y: ${pt.y.toFixed(1)}\"`;
+  if(!state.dragging){const hover=hitTest(pt); canvas.title=hover?`${unitDisplayName(hover)} (${hover.base})`:'';}
   if(!state.dragging)return;
+  if(state.dragging.type==='rotate'){
+    const u=state.units.find(x=>x.id===state.dragging.id); if(!u)return;
+    const angle=Math.atan2(pt.y-u.y,pt.x-u.x);
+    u.rotation=state.dragging.startRotation+(angle-state.dragging.startAngle)*180/Math.PI;
+    draw(); renderArmy(); return;
+  }
   if(state.dragging.type==='unit'){
     const u=state.units.find(x=>x.id===state.dragging.id);if(!u)return;
-    const pos=clampUnit(u,pt.x-state.dragging.dx,pt.y-state.dragging.dy);
-    // Deliberately no snapping: unit bases can be positioned anywhere in the 60 x 44 board.
-    u.x=pos.x;u.y=pos.y;
-  } else if(state.dragging.type==='measurement'){
+    u.x=Math.max(u.w/2,Math.min(BOARD_W-u.w/2,pt.x-state.dragging.dx));
+    u.y=Math.max(u.h/2,Math.min(BOARD_H-u.h/2,pt.y-state.dragging.dy));
+    if(state.dragging.trailIndex!==null && state.dragging.trailIndex!==undefined){
+      const trail=state.trails[state.dragging.trailIndex];
+      if(trail){
+        const dx=u.x-state.dragging.lastTrailX,dy=u.y-state.dragging.lastTrailY;
+        if(Math.hypot(dx,dy)>=.12){trail.points.push({x:u.x,y:u.y});state.dragging.lastTrailX=u.x;state.dragging.lastTrailY=u.y;}
+        else if(trail.points.length===1){trail.points.push({x:u.x,y:u.y});}
+      }
+    }
+  } else {
     const m=state.measurements.find(x=>x.id===state.dragging.id);if(!m)return;
-    const pos=clampMeasurement(m,pt.x-state.dragging.dx,pt.y-state.dragging.dy);
-    m.x=pos.x;m.y=pos.y;
+    m.x=Math.max(m.diameter/2,Math.min(BOARD_W-m.diameter/2,pt.x-state.dragging.dx));
+    m.y=Math.max(m.diameter/2,Math.min(BOARD_H-m.diameter/2,pt.y-state.dragging.dy));
   }
   draw(); renderArmy();
 });
@@ -492,15 +633,18 @@ document.getElementById('addArmyUnit').addEventListener('click',()=>{const b=BAS
 document.getElementById('undoBtn').addEventListener('click',undo);
 document.getElementById('redoBtn').addEventListener('click',redo);
 document.getElementById('deleteBtn').addEventListener('click',removeSelected);
+document.getElementById('renameUnitBtn').addEventListener('click',()=>renameSelectedUnit(document.getElementById('renameUnitInput').value));
+document.getElementById('renameUnitInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();renameSelectedUnit(e.currentTarget.value);}});
 document.getElementById('clearBtn').addEventListener('click',clearUnits);
 document.getElementById('labelsBtn').addEventListener('click',()=>{state.showLabels=!state.showLabels;draw();});
 document.getElementById('addMeasurement').addEventListener('click',addMeasurement);
-document.getElementById('measurementDiameter').addEventListener('keydown',e=>{if(e.key==='Enter')addMeasurement();});
 document.getElementById('gridToggle').addEventListener('change',e=>{state.showGrid=e.target.checked;draw();});
 document.getElementById('sectionsToggle').addEventListener('change',e=>{state.showSections=e.target.checked;draw();});
 document.getElementById('rulersToggle').addEventListener('change',e=>{state.showRulers=e.target.checked;draw();});
 document.getElementById('objectivesToggle').addEventListener('change',e=>{state.showObjectives=e.target.checked;draw();});
 document.getElementById('terrainToggle').addEventListener('change',e=>{state.showTerrain=e.target.checked;draw();});
+document.getElementById('trailModeToggle').addEventListener('change',e=>{state.trailMode=e.target.checked;});
+document.getElementById('clearTrailsBtn').addEventListener('click',clearMovementTrails);
 tacticSelect.addEventListener('change',e=>showTactic(e.target.value));
 document.getElementById('importList').addEventListener('click',()=>{
   const lines=document.getElementById('listText').value.split(/\n/).map(x=>x.trim()).filter(Boolean),added=[];

@@ -80,6 +80,7 @@
         <label class="checkbox"><input id="rulersToggle" type="checkbox" checked> Coordinate rulers</label>
         <label class="checkbox"><input id="objectivesToggle" type="checkbox" checked> Objective control zones</label>
         <label class="checkbox"><input id="terrainToggle" type="checkbox" checked> Terrain & places of power</label>
+        <label class="checkbox"><input id="trailModeToggle" type="checkbox"> Movement arrow trails</label>
       </div>
     </section>
 
@@ -91,14 +92,33 @@
         <button id="deleteBtn">Delete selected</button>
         <button id="clearBtn">Clear units</button>
         <button id="labelsBtn">Toggle labels</button>
+        <button id="clearTrailsBtn">Clear movement trails</button>
       </div>
-      <div class="measurement-tool">
-        <label for="measurementDiameter">Measurement circle diameter (inches)</label>
-        <div class="row"><input id="measurementDiameter" type="number" min="0.5" max="60" step="0.5" value="9"><button id="addMeasurement">Add circle</button></div>
-        <small>Measurement circles are free-positioned, nearly transparent, and can be selected, dragged, or deleted.</small>
+      <div class="rename-unit-control">
+        <label for="renameUnitInput">Rename selected unit</label>
+        <div class="row">
+          <input id="renameUnitInput" type="text" placeholder="Select a unit first" aria-label="Selected unit name">
+          <button id="renameUnitBtn" disabled>Rename</button>
+        </div>
+        <small>Base labels use initials; duplicate names get numbered labels. Hover a base for its full name. Select an oval base and drag its yellow handle to rotate.</small>
       </div>
     </section>
 
+
+
+    <section class="measurement-card">
+      <h3>Range / measurement circles</h3>
+      <p>Set a diameter or radius, then add a transparent circle to the battlefield. Drag it freely; select it and use Delete to remove it. Turn on <b>Movement arrow trails</b> to record translucent paths while dragging units.</p>
+      <div class="row">
+        <input id="measurementSize" type="number" min="0.5" step="0.5" value="9" aria-label="Measurement size">
+        <select id="measurementMode" aria-label="Measurement mode">
+          <option value="diameter">diameter</option>
+          <option value="radius">radius</option>
+        </select>
+      </div>
+      <button id="addMeasurement" class="wide-button">+ Add measurement circle</button>
+      <small>Measurements are not snapped to the grid.</small>
+    </section>
     <section class="import-card">
       <h3>Import a list</h3>
       <p>Paste a simple list, one unit per line. Examples: <code>5 Liberators</code>, <code>Liberators x5</code>.</p>
@@ -108,8 +128,8 @@
     </section>
 
     <footer>
-      <p><strong>Scale:</strong> The board is rendered from a 60" × 44" coordinate system. Every grid square is exactly 1" × 1" in the drawing coordinate system; bases and map features use the same scale.</p>
-      <p><strong>Map geometry:</strong> Deployment zones and battlefield objects are encoded as vector geometry, so the battle-plan artwork is not used as a background layer.</p>
+      <p><strong>Scale:</strong> The board is rendered from a 60" × 44" coordinate system. Every grid square is exactly 1" × 1"; unit bases and measurement circles use the same scale.</p>
+      <p><strong>Map geometry:</strong> Deployment zones and fixed battlefield objects are encoded as editable vector geometry in <code>data/battleplans.json</code>. The PDF is not used as a background layer.</p>
       <p><strong>Battleplan/rules source:</strong> Wahapedia — General’s Handbook 2026–27. Map geometry is represented as game-board coordinates rather than a raster image.</p>
     </footer>
   </aside>
@@ -121,7 +141,7 @@
     <div class="statusbar">
       <span id="coords">x: — y: —</span>
       <span id="selectedInfo">Nothing selected</span>
-      <span>60" × 44" • 1" grid • fixed map features use 0.5" coordinates • unit bases are free-positioned</span>
+      <span>60" × 44" • 4 × 4 cells • 15" × 11"</span>
     </div>
   </section>
 </main>

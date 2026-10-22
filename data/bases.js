@@ -1,4 +1,4 @@
-window.BASES=[
+window.BASES = [
   {
     "grandFaction": "Chaos",
     "army": "Blades of Khorne",
@@ -748,8 +748,7 @@ window.BASES=[
     "army": "Base Size Presets",
     "unit": "280 x 210mm base",
     "base": "280 x 210mm"
-  }
-,
+  },
   {
     "grandFaction": "Destruction",
     "army": "Sons of Behemat",
@@ -973,5 +972,33 @@ window.BASES=[
     "unit": "Gutter Runners",
     "base": "mixed: Champion 32mm; other models 28.5mm",
     "source": "Wahapedia / Battletome Supplement: Skaven Eshin"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Boss-stompers",
+    "base": "90mm",
+    "source": "Wahapedia / Sons of Behemat 4th edition; base size verified 2026"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Rock-hurlers",
+    "base": "90mm",
+    "source": "Wahapedia / Sons of Behemat 4th edition; base size verified 2026"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Ma Maegran, Chooser of the Mighty",
+    "base": "90mm",
+    "source": "Sons of Behemat 2026 kit contents / verified base size"
+  },
+  {
+    "grandFaction": "Destruction",
+    "army": "Sons of Behemat",
+    "unit": "Ancient Ghyrochs",
+    "base": "105 x 70mm",
+    "source": "Sons of Behemat 2026 kit contents; two models, each on 105 x 70mm oval"
   }
 ];
