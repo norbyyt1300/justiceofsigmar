@@ -122,9 +122,11 @@
     <section class="import-card">
       <h3>Import a list</h3>
       <p>Paste a simple list, one unit per line. Examples: <code>5 Liberators</code>, <code>Liberators x5</code>.</p>
-      <textarea id="listText" rows="6" placeholder="Liberators x5&#10;Prosecutors x3"></textarea>
-      <button id="importList">Import to current army</button>
-      <small>Best-effort matching against the bundled base-size index.</small>
+      <div class="row import-options"><label>Army name<input id="importArmyName" placeholder="e.g. Stormcast Eternals"></label><label>Color<input id="importArmyColor" type="color" value="#3488ff" aria-label="Imported army color"></label></div>
+      <label>Paste list or JSON export<textarea id="listText" rows="6" placeholder="5 Liberators&#10;Prosecutors x3"></textarea></label>
+      <label class="file-label">Or import an army export file<input id="armyImportFile" type="file" accept=".json,.txt,.csv,.html,.rosz,.xml,.pdf,application/json,text/plain,text/csv,text/html,application/pdf"></label>
+      <button id="importList">Import list / file to selected army</button>
+      <small>Supports pasted lists and best-effort JSON, CSV, text and roster exports. Unknown unit names are reported so you can review them.</small>
     </section>
 
     <footer>

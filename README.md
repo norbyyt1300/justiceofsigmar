@@ -55,3 +55,6 @@ Enable **Movement arrow trails** in Map layers before dragging a unit to record 
 - Select an oval base and drag its yellow rotation handle to rotate it. The `R` key still rotates the selected unit by 15 degrees. Circular bases do not show a rotation handle because their orientation is not visually meaningful.
 - Unit labels show initials from the unit's displayed name; multiple units with the same displayed name in one army receive numbered labels (for example `L1`, `L2`).
 - Use **Rename selected unit** to give an individual base a custom name. Hover over a base to see its full displayed name in a tooltip. Renames and rotations are included in undo/redo and plan snapshots.
+
+### Army list import
+The import panel accepts pasted line-based lists and file uploads in JSON, TXT, CSV, HTML, XML, and roster (`.rosz`) formats where their text can be read. JSON parsing looks for common unit-name and quantity fields recursively; text parsing recognizes forms such as `5 Liberators`, `Liberators x5`, and `Liberators,5`. Choose the destination army's display name and color before importing. Matching is best-effort against `data/bases.js`; unmatched entries are listed for review. PDF files are accepted by the picker but are not parsed automatically—copy their roster text into the paste box instead.

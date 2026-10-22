@@ -28,7 +28,7 @@ const OBJECTIVE_CONTROL_RADIUS = OBJECTIVE_CONTROL_DIAMETER / 2;
 const state = {
   planId: PLANS[0].id,
   army: 'blue',
-  armies: {blue:{name:'Blue Army'}, red:{name:'Red Army'}},
+  armies: {blue:{name:'Blue Army',color:'#3488ff'}, red:{name:'Red Army',color:'#ef4f55'}},
   units: [],
   selected: null,
   showGrid: true,
@@ -116,7 +116,8 @@ function snapshot(includeHistory=true){
 function restore(s){
   state.planId=s.planId||PLANS[0].id;
   state.army=s.army||'blue';
-  state.armies=clone(s.armies||{blue:{name:'Blue Army'},red:{name:'Red Army'}});
+  state.armies=clone(s.armies||{blue:{name:'Blue Army',color:'#3488ff'},red:{name:'Red Army',color:'#ef4f55'}});
+  for(const [key,def] of Object.entries({blue:{name:'Blue Army',color:'#3488ff'},red:{name:'Red Army',color:'#ef4f55'}})){state.armies[key] ||= clone(def); state.armies[key].color ||= def.color;}
   state.units=clone(s.units||[]);
   state.showGrid=s.showGrid!==false;
   state.showSections=s.showSections!==false;
@@ -237,7 +238,7 @@ function renderArmy(){
   const filtered=BASES.filter(b=>!q||normalize(b.unit).includes(q)||normalize(b.army).includes(q)||normalize(b.grandFaction).includes(q)).slice(0,80);
   unitResults.innerHTML=filtered.map(b=>`<div class="unit-result" data-index="${BASES.indexOf(b)}"><strong>${b.unit}</strong><small>${b.army} • ${b.base}</small></div>`).join('')||'<div class="unit-result">No match — use a base preset or import your list.</div>';
   const own=state.units.filter(u=>u.army===state.army);
-  armyKey.innerHTML=own.length?own.map(u=>`<div class="key-row" title="${escapeHtml(unitDisplayName(u))}"><span class="swatch" style="background:${u.army==='blue'?'#3488ff':'#ef4f55'}"></span><span class="key-id">${u.id}</span><span>${escapeHtml(unitDisplayName(u))}</span><span style="margin-left:auto;color:#9ca7b8">${u.base}</span></div>`).join(''):'<small>No units yet.</small>';
+  armyKey.innerHTML=own.length?own.map(u=>`<div class="key-row" title="${escapeHtml(unitDisplayName(u))}"><span class="swatch" style="background:${state.armies[u.army]?.color||(u.army==='blue'?'#3488ff':'#ef4f55')}"></span><span class="key-id">${u.id}</span><span>${escapeHtml(unitDisplayName(u))}</span><span style="margin-left:auto;color:#9ca7b8">${u.base}</span></div>`).join(''):'<small>No units yet.</small>';
   const renameInput=document.getElementById('renameUnitInput'); const renameBtn=document.getElementById('renameUnitBtn');
   const selectedUnit=state.units.find(x=>x.id===state.selected);
   if(renameInput && document.activeElement!==renameInput) renameInput.value=selectedUnit?unitDisplayName(selectedUnit):'';
@@ -418,28 +419,13 @@ function drawMovementTrails(){
     ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
     for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i].x,pts[i].y);
     ctx.strokeStyle=`rgba(${color},.34)`; ctx.lineWidth=.42; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.stroke();
-
-    // Small direction markers spaced along the path; no arrow is added at the endpoint.
-    const spacing=4.5, head=.42, half=.23;
-    let travelled=0, nextArrow=spacing;
-    for(let i=1;i<pts.length;i++){
-      const a=pts[i-1], b=pts[i], dx=b.x-a.x, dy=b.y-a.y;
-      const segLen=Math.hypot(dx,dy);
-      if(segLen<1e-6) continue;
-      while(travelled+segLen>=nextArrow){
-        const t=(nextArrow-travelled)/segLen;
-        const x=a.x+dx*t, y=a.y+dy*t;
-        const ux=dx/segLen, uy=dy/segLen, px=-uy, py=ux;
-        ctx.beginPath();
-        ctx.moveTo(x+ux*head,y+uy*head);
-        ctx.lineTo(x-ux*head+px*half,y-uy*head+py*half);
-        ctx.lineTo(x-ux*head-px*half,y-uy*head-py*half);
-        ctx.closePath();
-        ctx.fillStyle=`rgba(${color},.58)`; ctx.fill();
-        nextArrow+=spacing;
-      }
-      travelled+=segLen;
-    }
+    const a=pts[pts.length-2], b=pts[pts.length-1];
+    const ang=Math.atan2(b.y-a.y,b.x-a.x), head=.95, half=.42;
+    ctx.beginPath();
+    ctx.moveTo(b.x,b.y);
+    ctx.lineTo(b.x-head*Math.cos(ang)+half*Math.sin(ang),b.y-head*Math.sin(ang)-half*Math.cos(ang));
+    ctx.lineTo(b.x-head*Math.cos(ang)-half*Math.sin(ang),b.y-head*Math.sin(ang)+half*Math.cos(ang));
+    ctx.closePath(); ctx.fillStyle=`rgba(${color},.42)`; ctx.fill();
     ctx.restore();
   }
 }
@@ -474,8 +460,9 @@ function drawMeasurements(){
 }
 function drawUnit(u){
   const selected=u.id===state.selected;
-  const fill=u.army==='blue'?'rgba(52,136,255,.72)':'rgba(239,79,85,.72)';
-  const stroke=u.army==='blue'?'#0d4ea8':'#9e1e26';
+  const color=state.armies[u.army]?.color||(u.army==='blue'?'#3488ff':'#ef4f55');
+  const fill=color+'b8';
+  const stroke=color;
   ctx.save();ctx.translate(u.x,u.y);ctx.rotate((u.rotation||0)*Math.PI/180);
   ctx.beginPath();ctx.ellipse(0,0,u.w/2,u.h/2,0,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();ctx.lineWidth=selected?.16:.07;ctx.strokeStyle=selected?'#fff':stroke;ctx.stroke();
   if(selected){ctx.setLineDash([.15,.12]);ctx.strokeStyle='#fff';ctx.lineWidth=.06;ctx.stroke();ctx.setLineDash([]);}
@@ -646,16 +633,57 @@ document.getElementById('terrainToggle').addEventListener('change',e=>{state.sho
 document.getElementById('trailModeToggle').addEventListener('change',e=>{state.trailMode=e.target.checked;});
 document.getElementById('clearTrailsBtn').addEventListener('click',clearMovementTrails);
 tacticSelect.addEventListener('change',e=>showTactic(e.target.value));
-document.getElementById('importList').addEventListener('click',()=>{
-  const lines=document.getElementById('listText').value.split(/\n/).map(x=>x.trim()).filter(Boolean),added=[];
-  lines.forEach(line=>{
-    let count=1,name=line,m=line.match(/^(?:x|×)?\s*(\d+)\s+(.+)$/i); if(m){count=+m[1];name=m[2];}
-    m=line.match(/^(.+?)\s+(?:x|×)\s*(\d+)$/i); if(m){name=m[1];count=+m[2];}
-    const n=normalize(name); let b=BASES.find(x=>normalize(x.unit)===n); if(!b)b=BASES.find(x=>n.includes(normalize(x.unit))||normalize(x.unit).includes(n));
-    if(b){addUnit(b,state.army,Math.min(count,30));added.push(`${name} ×${count}`);}
-  });
-  alert(added.length?`Imported: ${added.join(', ')}`:'No unit names matched the bundled base-size index.');
-});
+function extractArmyRows(data){
+  const rows=[]; const seen=new Set();
+  const known=new Set(BASES.map(b=>normalize(b.unit)));
+  function walk(v){
+    if(!v)return;
+    if(Array.isArray(v)){v.forEach(walk);return;}
+    if(typeof v!=='object')return;
+    const keys=Object.keys(v); const nameKeys=['name','unitName','unit_name','displayName','profileName','title'];
+    let name=''; for(const k of nameKeys) if(typeof v[k]==='string'&&v[k].trim()){name=v[k].trim();break;}
+    const n=normalize(name); const countRaw=v.quantity??v.count??v.modelCount??v.model_count??v.number??v.amount??1;
+    const count=Math.max(1,Math.min(30,parseInt(countRaw,10)||1));
+    const hasUnitHint=keys.some(k=>/unit|warscroll|roster|selection|datasheet/i.test(k)) || known.has(n);
+    if(name&&hasUnitHint&&n&&!seen.has(n+'|'+count)){rows.push({name,count});seen.add(n+'|'+count);}
+    for(const [k,val] of Object.entries(v)){if(val&&typeof val==='object')walk(val);}
+  }
+  walk(data); return rows;
+}
+function parseListText(text){
+  const rows=[];
+  for(let line of String(text||'').split(/\r?\n/)){line=line.trim();if(!line||/^(army|roster|units|name,|#|\[)/i.test(line))continue;
+    line=line.replace(/^[-*•\s]+/,'').replace(/[,;]+$/,'');
+    let count=1,name=line,m=line.match(/^(?:x|×)?\s*(\d+)\s+(.+)$/i);if(m){count=+m[1];name=m[2];}
+    m=line.match(/^(.+?)\s+(?:x|×)\s*(\d+)$/i);if(m){name=m[1];count=+m[2];}
+    m=line.match(/^(.+?)[,;]\s*(\d+)$/);if(m){name=m[1];count=+m[2];}
+    name=name.replace(/\s*\([^)]*(?:pts|points|models?)[^)]*\)\s*/ig,' ').trim();
+    if(name)rows.push({name,count:Math.max(1,Math.min(30,count||1))});
+  }return rows;
+}
+async function importArmyText(text, filename=''){
+  let rows=[], armyName='';
+  const trimmed=String(text||'').trim();
+  if(filename.toLowerCase().endsWith('.pdf')||trimmed.startsWith('%PDF')){alert('PDF exports are not parsed directly in this version. Copy the roster text from the PDF and paste it into the list box, or import a JSON/text/CSV export.');return;}
+  if(filename.toLowerCase().endsWith('.json')||trimmed.startsWith('{')||trimmed.startsWith('[')){
+    try{const data=JSON.parse(trimmed);armyName=data.armyName||data.army_name||data.rosterName||data.name||data.listName||'';rows=extractArmyRows(data);}catch{rows=[];}
+  }
+  if(!rows.length)rows=parseListText(trimmed);
+  if(!rows.length){alert('No unit entries could be read. Try a JSON/text/CSV export or paste one unit per line.');return;}
+  const nameInput=document.getElementById('importArmyName');
+  const finalName=(nameInput.value.trim()||armyName||state.armies[state.army].name||'Imported Army').slice(0,40);
+  const color=document.getElementById('importArmyColor').value||state.armies[state.army].color||'#3488ff';
+  const matched=[],unmatched=[]; record();
+  state.armies[state.army].name=finalName;state.armies[state.army].color=color;
+  state.units.filter(u=>u.army===state.army).forEach(u=>u.armyName=finalName);
+  for(const row of rows){const n=normalize(row.name);let b=BASES.find(x=>normalize(x.unit)===n);if(!b)b=BASES.find(x=>n===normalize(x.unit+' '+x.army)||n.includes(normalize(x.unit))||normalize(x.unit).includes(n));
+    if(b){for(let i=0;i<Math.min(30,row.count);i++){const size=parseBase(b.base);state.units.push({id:idForArmy(state.army),army:state.army,armyName:finalName,unit:b.unit,sourceArmy:b.army,base:b.base,w:size.w,h:size.h,x:state.army==='blue'?8:52,y:state.army==='blue'?8:36,rotation:0});}matched.push(`${row.name} ×${row.count}`);}else unmatched.push(row.name);
+  }
+  renderArmy();draw();
+  alert(`Imported ${matched.length} matched roster line(s) as “${finalName}”.`+(unmatched.length?'\nCould not match: '+unmatched.slice(0,15).join(', ')+(unmatched.length>15?'…':''):'')+'\nPlease review imported unit names and quantities.');
+}
+document.getElementById('importList').addEventListener('click',()=>importArmyText(document.getElementById('listText').value));
+document.getElementById('armyImportFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{await importArmyText(await f.text(),f.name);}catch(err){alert('Could not import that file: '+err.message);}e.target.value='';});
 document.getElementById('exportBtn').addEventListener('click',()=>{
   const a=document.createElement('a');a.download=`aos-${state.planId}-battle-plan.png`;a.href=canvas.toDataURL('image/png');a.click();
 });
